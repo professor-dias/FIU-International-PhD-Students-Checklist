@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FIU International PhD Students Checklist</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+  :root{
+    --paper:#ffffff;
+    --panel:#f5f7fb;
+    --panel-strong:#ebeff6;
+    --line:#dce3ee;
+    --ink:#101b2e;
+    --ink-soft:#4a5670;
+    --brand:#081e3f;
+    --brand-soft:#0e2c57;
+    --accent:#b6862c;
+    --accent-soft:#f1e4c8;
+    --on-accent:#241900;
+    --focus:#1d4ed8;
+    --shadow:rgba(8,30,63,.10);
+    color-scheme:light;
+  }
+  /* White background by design, regardless of system/device theme. */
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Lexend',system-ui,-apple-system,'Segoe UI',sans-serif;
+    line-height:1.6;
+    padding-inline:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--brand-soft);text-decoration-thickness:1.5px;text-underline-offset:2px;}
+  a:hover{color:var(--accent);}
+  a:focus-visible,button:focus-visible,label:focus-within .box{
+    outline:3px solid var(--focus);
+    outline-offset:2px;
+    border-radius:4px;
+  }
+  .wrap{max-width:700px;margin:0 auto;}
+
+  /* progress bar */
+  .progressbar{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:var(--paper);
+    padding-block:10px 8px;
+    border-bottom:1px solid var(--line);
+  }
+  .progressbar .row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:6px;
+  }
+  .progressbar .label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .progressbar .count{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;
+    font-size:.85rem;
+    color:var(--brand-soft);
+    font-variant-numeric:tabular-nums;
+  }
+  .track{
+    height:8px;
+    background:var(--panel-strong);
+    border-radius:99px;
+    overflow:hidden;
+  }
+  .fill{
+    height:100%;
+    width:0%;
+    border-radius:99px;
+    background:linear-gradient(90deg,var(--brand-soft),var(--accent));
+    transition:width .35s ease;
+  }
+
+  header.intro{padding-block:28px 8px;}
+  header.intro .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.75rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 10px;
+  }
+  header.intro h1{
+    font-size:clamp(1.7rem,5vw,2.3rem);
+    font-weight:700;
+    color:var(--brand-soft);
+    margin:0 0 10px;
+    text-wrap:balance;
+  }
+  header.intro p{
+    color:var(--ink-soft);
+    font-size:1.02rem;
+    margin:0 0 6px;
+    max-width:60ch;
+  }
+  header.intro .congrats{
+    background:var(--accent-soft);
+    color:var(--on-accent);
+    border-radius:12px;
+    padding:14px 16px;
+    font-weight:500;
+    margin-top:16px;
+  }
+  main{padding-block:8px 40px;display:flex;flex-direction:column;gap:28px;}
+
+  .step{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px;
+    scroll-margin-top:70px;
+  }
+  .step-head{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    margin-bottom:10px;
+  }
+  .badge{
+    flex:0 0 auto;
+    width:40px;height:40px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--paper);
+    border:2px solid var(--brand-soft);
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;
+    color:var(--brand-soft);
+    position:relative;
+    transition:background .2s ease, border-color .2s ease;
+  }
+  .badge svg{display:none;width:18px;height:18px;}
+  .step.complete .badge{background:var(--accent);border-color:var(--accent);}
+  .step.complete .badge .num{display:none;}
+  .step.complete .badge svg{display:block;stroke:var(--on-accent);}
+  .step h2{
+    font-size:1.2rem;
+    font-weight:600;
+    color:var(--ink);
+    margin:6px 0 0;
+    text-wrap:balance;
+  }
+  .step .lead{color:var(--ink-soft);margin:0 0 12px;}
+  .step .lead strong{color:var(--ink);}
+  .note{
+    background:var(--panel-strong);
+    border-left:3px solid var(--accent);
+    border-radius:0 10px 10px 0;
+    padding:12px 14px;
+    margin:0 0 14px;
+    font-size:.95rem;
+    color:var(--ink-soft);
+  }
+  .note strong{color:var(--ink);}
+  .why{
+    font-size:.95rem;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  .why strong{color:var(--ink);}
+
+  ul.checklist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+  ul.checklist li label{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    cursor:pointer;
+    padding:6px 4px;
+    border-radius:8px;
+  }
+  ul.checklist li label:hover{background:var(--panel-strong);}
+  ul.checklist input[type="checkbox"]{
+    position:absolute;
+    opacity:0;
+    width:24px;height:24px;
+    margin:0;
+  }
+  .box{
+    flex:0 0 auto;
+    width:24px;height:24px;
+    margin-top:1px;
+    border-radius:6px;
+    border:2px solid var(--brand-soft);
+    background:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .box svg{width:15px;height:15px;opacity:0;stroke:var(--on-accent);transition:opacity .1s ease;}
+  input:checked + .box{background:var(--accent);border-color:var(--accent);}
+  input:checked + .box svg{opacity:1;}
+  .txt{color:var(--ink);font-size:.98rem;}
+  input:checked ~ .txt{color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--line);text-decoration-thickness:1.5px;}
+
+  .callout{
+    background:var(--accent-soft);
+    border-radius:16px;
+    padding:22px;
+    color:var(--on-accent);
+  }
+  .callout h2{margin:0 0 8px;font-size:1.1rem;font-weight:600;}
+  .callout p{margin:0;}
+
+  footer{padding-block:24px 44px;border-top:1px solid var(--line);}
+  footer .actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
+  button.reset{
+    font-family:'Lexend',sans-serif;
+    font-size:.88rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:8px 16px;
+    cursor:pointer;
+  }
+  button.reset:hover{color:var(--ink);border-color:var(--brand-soft);}
+  .confirm{display:none;align-items:center;gap:8px;font-size:.88rem;color:var(--ink-soft);}
+  .confirm.show{display:flex;}
+  .confirm button{
+    font-family:'Lexend',sans-serif;
+    font-size:.85rem;
+    border-radius:999px;
+    padding:6px 14px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    cursor:pointer;
+    color:var(--ink);
+  }
+  .confirm button.yes{background:var(--brand-soft);color:var(--paper);border-color:var(--brand-soft);}
+  footer p{color:var(--ink-soft);font-size:.9rem;max-width:60ch;}
+  footer .sources{margin-top:14px;font-size:.82rem;color:var(--ink-soft);}
+  footer .sources summary{cursor:pointer;color:var(--brand-soft);}
+  footer .sources ul{margin:8px 0 0;padding-left:18px;}
+
+  @media (prefers-reduced-motion: reduce){
+    .fill,.badge,.box{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="progressbar">
+    <div class="row">
+      <span class="label">Your progress</span>
+      <span class="count" id="progress-count">0 of 13 sections complete</span>
+    </div>
+    <div class="track"><div class="fill" id="progress-fill"></div></div>
+  </div>
+
+  <header class="intro">
+    <p class="eyebrow">FIU · Graduate Assistant Onboarding</p>
+    <h1>FIU International PhD Students Checklist</h1>
+    <p class="congrats">Congratulations! You got into the PhD Public Health Program (HPDP) &mdash; now what?</p>
+  </header>
+
+  <main>
+
+    <section class="step" id="step-1" data-step="1">
+      <div class="step-head">
+        <div class="badge"><span class="num">1</span></div>
+        <h2>Accept Your Admission and Wait for Your Funding Letter</h2>
+      </div>
+      <p class="lead">Here's the order these emails actually show up in:</p>
+      <ol style="margin:0 0 14px;padding-left:22px;color:var(--ink-soft);display:flex;flex-direction:column;gap:8px;">
+        <li>First, you get an email from your department confirming your admission.</li>
+        <li>Next, you get an email from the School of Public Health (HPDP). That's your green light to activate <a href="https://my.fiu.edu/" target="_blank" rel="noopener">MyFIU</a>.</li>
+        <li>Your funding (GA) letter usually takes a few more days to land. If it's dragging, follow up with your program director &mdash; they're the one who's been emailing you this whole time.</li>
+      </ol>
+      <p class="why">Once you've got both your admission letter and your funding letter, you're ready for Step 2 and your I-20.</p>
+    </section>
+
+    <section class="step" id="step-2" data-step="2">
+      <div class="step-head">
+        <div class="badge"><span class="num">2</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>Get Your I-20 (Proof You're Approved to Study Here)</h2>
+      </div>
+      <div class="note"><strong>What it is:</strong> Your I-20 is basically FIU's stamp of approval. It proves you're a real, full-time international student who can afford to be here. No I-20 means no visa and no getting into the U.S. as a student.</div>
+      <p class="why">Once you've got your admission letter and your funding letter (Step 1), you're ready to start this. FIU just needs to confirm you can cover your costs before they'll issue your I-20.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-2-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Fill out the Declaration and Certification of Finances (DCF): <a href="https://admissions.fiu.edu/international/last-steps/dcf-2025-2026-final-v3.pdf#DCF%202025-26" target="_blank" rel="noopener">DCF form (PDF)</a></span></label></li>
+        <li><label><input type="checkbox" id="chk-2-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Submit it through <a href="https://my.fiu.edu/" target="_blank" rel="noopener">MyFIU</a></span></label></li>
+        <li><label><input type="checkbox" id="chk-2-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Attach your GA/funding letter to show you can cover your costs</span></label></li>
+        <li><label><input type="checkbox" id="chk-2-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Wait for FIU to issue your I-20 (this comes from Graduate/International Admissions, not ISSS &mdash; International Student &amp; Scholar Services)</span></label></li>
+        <li><label><input type="checkbox" id="chk-2-4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">More info here: <a href="https://admissions.fiu.edu/international/last-steps/" target="_blank" rel="noopener">FIU International Admissions &mdash; Last Steps</a></span></label></li>
+      </ul>
+    </section>
+
+    <section class="step" id="step-3" data-step="3">
+      <div class="step-head">
+        <div class="badge"><span class="num">3</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>Pay the SEVIS Fee and Get Your Visa</h2>
+      </div>
+      <div class="note"><strong>What it is:</strong> The SEVIS I-901 fee is a one-time government fee that activates your student record in the U.S. immigration system (SEVIS). Your F-1 visa is the stamp in your passport that lets you travel to the U.S. as a student.</div>
+      <p class="why"><strong>Why it matters:</strong> You can't book your visa appointment until the SEVIS fee is paid, and you can't travel without the visa. As soon as your I-20 arrives, move on this &mdash; visa appointment slots fill up, and that timeline is outside FIU's control.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-3-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Pay the SEVIS I-901 fee</span></label></li>
+        <li><label><input type="checkbox" id="chk-3-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Save the payment receipt</span></label></li>
+        <li><label><input type="checkbox" id="chk-3-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Schedule your F-1 visa appointment at a U.S. embassy or consulate</span></label></li>
+        <li><label><input type="checkbox" id="chk-3-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Attend the appointment and get your visa</span></label></li>
+      </ul>
+    </section>
+
+    <section class="step" id="step-4" data-step="4">
+      <div class="step-head">
+        <div class="badge"><span class="num">4</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>Keep an Eye on MyFIU</h2>
+      </div>
+      <div class="note"><strong>What it is:</strong> MyFIU is your personal FIU account portal. A "hold" is something blocking you from registering for classes until you fix it, like a missing document.</div>
+      <p class="why">A hold is not something to discover the week classes start.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-4-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Log in to <a href="https://my.fiu.edu/" target="_blank" rel="noopener">MyFIU</a> regularly, not just once</span></label></li>
+        <li><label><input type="checkbox" id="chk-4-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Check your To-Do List and application status for holds</span></label></li>
+        <li><label><input type="checkbox" id="chk-4-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Don't let a hold sit there and surprise you later</span></label></li>
+      </ul>
+    </section>
+
+    <section class="step" id="step-5" data-step="5">
+      <div class="step-head">
+        <div class="badge"><span class="num">5</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>Clear Your Immunization and Insurance Holds</h2>
+      </div>
+      <p class="why"><strong>Why it matters:</strong> Either an immunization hold or an insurance hold can stop you from registering for classes, even if you're a fully funded GA (Graduate Assistant). Do this at least 4 weeks before registration.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-5-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Submit immunization records online</span></label></li>
+        <li><label><input type="checkbox" id="chk-5-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Confirm you have F-1 medical insurance that meets FIU's requirement</span></label></li>
+        <li><label><input type="checkbox" id="chk-5-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Do not assume a GA automatically clears the insurance hold; verify it yourself</span></label></li>
+      </ul>
+    </section>
+
+    <section class="step" id="step-6" data-step="6">
+      <div class="step-head">
+        <div class="badge"><span class="num">6</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>Register for Classes and Find Housing</h2>
+      </div>
+      <p class="why">F-1 grad students need 9 credits per Fall/Spring semester: at least 6 in person, no more than 3 online counting toward that 9. Start looking for housing at the same time &mdash; don't wait until you land.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-6-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Register once holds are cleared</span></label></li>
+        <li><label><input type="checkbox" id="chk-6-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Confirm your schedule meets the 9-credit F-1 requirement (6+ in person)</span></label></li>
+        <li><label><input type="checkbox" id="chk-6-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Start looking for housing as soon as you register</span></label></li>
+        <li><label><input type="checkbox" id="chk-6-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">On-campus: <a href="https://www.fiuoffcampushousing.com/" target="_blank" rel="noopener">fiuoffcampushousing.com</a></span></label></li>
+        <li><label><input type="checkbox" id="chk-6-4"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Off-campus: <a href="https://housing.fiu.edu/" target="_blank" rel="noopener">housing.fiu.edu</a></span></label></li>
+        <li><label><input type="checkbox" id="chk-6-5"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">You can also check Facebook groups and Craigslist, but be careful: never send money for a place you haven't seen, and never wire money to someone you haven't met in person</span></label></li>
+      </ul>
+    </section>
+
+    <section class="step" id="step-7" data-step="7">
+      <div class="step-head">
+        <div class="badge"><span class="num">7</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>Start GA/HR Onboarding Before You Arrive</h2>
+      </div>
+      <div class="note"><strong>What it is:</strong> A GA (Graduate Assistant) position is paid work for the university, done alongside your PhD program. Getting this set up early means your first paycheck isn't delayed once you arrive.</div>
+      <p class="why">Do this before you leave for the U.S., not after.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-7-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Contact your department's GA/hiring coordinator</span></label></li>
+        <li><label><input type="checkbox" id="chk-7-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Ask if your GA appointment has been initiated. Call HR, introduce yourself, and ask what they need from you: <a href="https://hr.fiu.edu/about-us/ask-hr/" target="_blank" rel="noopener">Ask HR</a></span></label></li>
+        <li><label><input type="checkbox" id="chk-7-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Ask what Sign-On/onboarding requirements are still outstanding. You can fill some Sign-On packet pages before you enter the U.S. &mdash; fill them out as soon as HR emails them to you</span></label></li>
+        <li><label><input type="checkbox" id="chk-7-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Ask HR how to start your Employment Verification early. HR will need to verify your past employers, so let those employers know they'll get an email asking them to confirm you worked there</span></label></li>
+      </ul>
+    </section>
+
+    <section class="step" id="step-8" data-step="8">
+      <div class="step-head">
+        <div class="badge"><span class="num">8</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>Complete Pre-Arrival Requirements</h2>
+      </div>
+      <p class="why">FIU requires this before check-in, and requires these documents at entry.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-8-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Complete FIU's online Pre-Arrival Information Course</span></label></li>
+        <li><label><input type="checkbox" id="chk-8-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Save the completion certificate (you'll need it for check-in)</span></label></li>
+        <li><label><input type="checkbox" id="chk-8-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Gather: signed I-20, F-1 visa, passport, SEVIS I-901 receipt, admission documentation, financial documentation</span></label></li>
+      </ul>
+    </section>
+
+    <section class="step" id="step-9" data-step="9">
+      <div class="step-head">
+        <div class="badge"><span class="num">9</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>Travel to the U.S.</h2>
+      </div>
+      <p class="why"><strong>Why it matters:</strong> Entering as an F-1 student, not a tourist, keeps your legal student status intact from day one. Entering the wrong way can cause serious problems later. You can enter as early as 30 days before your I-20 program start date &mdash; arrive at the start of that window, since payroll processing takes time once you land.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-9-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Enter using your F-1 status, not a tourist/visa-waiver admission</span></label></li>
+        <li><label><input type="checkbox" id="chk-9-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Keep passport, visa, I-20, and supporting documents in your carry-on</span></label></li>
+        <li><label><input type="checkbox" id="chk-9-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Arrive as early as your I-20 allows (up to 30 days before program start)</span></label></li>
+      </ul>
+    </section>
+
+    <section class="step" id="step-10" data-step="10">
+      <div class="step-head">
+        <div class="badge"><span class="num">10</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>Right After You Land</h2>
+      </div>
+      <div class="note"><strong>What these are:</strong> Your I-94 is your official U.S. arrival record. SEVIS is the government system that tracks international students; it must show ACTIVE for you to legally study and work here.</div>
+      <p class="why">This step unlocks everything after it. Your SEVIS record only goes ACTIVE once ISSS (International Student &amp; Scholar Services) check-in is complete.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-10-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Retrieve your electronic I-94 at <a href="https://i94.cbp.dhs.gov/search/recent-search" target="_blank" rel="noopener">i94.cbp.dhs.gov</a> and verify the information is correct</span></label></li>
+        <li><label><input type="checkbox" id="chk-10-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Complete ISSS check-in through the Panther Portal (passport, F-1 visa, I-94, I-20, local U.S. address/phone, pre-arrival certificate)</span></label></li>
+        <li><label><input type="checkbox" id="chk-10-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Confirm your SEVIS record shows ACTIVE</span></label></li>
+        <li><label><input type="checkbox" id="chk-10-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Attend the mandatory New International Student Orientation (separate from your department orientation)</span></label></li>
+      </ul>
+    </section>
+
+    <section class="step" id="step-11" data-step="11">
+      <div class="step-head">
+        <div class="badge"><span class="num">11</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>Get Employment Certification and Apply for Your SSN</h2>
+      </div>
+      <div class="note"><strong>What it is:</strong> Your SSN (Social Security Number) is a 9-digit U.S. government ID number. You need it to get paid, to be added to payroll, and for everyday things like opening a bank account.</div>
+      <p class="why"><strong>Why it matters:</strong> No SSN, no paycheck. This is one of the most important steps on this whole list.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-11-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Submit the signed departmental employment letter to ISSS through the portal (F-1 Employment Request Form)</span></label></li>
+        <li><label><input type="checkbox" id="chk-11-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Receive your On-Campus Employment Certification / SSN support letter</span></label></li>
+        <li><label><input type="checkbox" id="chk-11-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Go to the Social Security office. Arrive early (7 a.m. is a realistic target) to make it in</span></label></li>
+        <li><label><input type="checkbox" id="chk-11-3"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Bring: employment certification, departmental employment letter, passport, I-20, I-94, SSN application, and your U.S. mailing address</span></label></li>
+      </ul>
+    </section>
+
+    <section class="step" id="step-12" data-step="12">
+      <div class="step-head">
+        <div class="badge"><span class="num">12</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>Finish GA Sign-On and I-9</h2>
+      </div>
+      <div class="note"><strong>What it is:</strong> The I-9 is a federal form that proves you're allowed to work in the U.S. Every employee fills one out, not just international students.</div>
+      <p class="why">You do not have to wait for the physical SSN card to start this.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-12-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Complete the GA Sign-On packet (use 000-00-0000 in the SSN field if your card hasn't arrived yet)</span></label></li>
+        <li><label><input type="checkbox" id="chk-12-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Complete the I-9 process once it's issued to you</span></label></li>
+        <li><label><input type="checkbox" id="chk-12-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">When your SSN card arrives, upload it and update your records</span></label></li>
+      </ul>
+    </section>
+
+    <section class="step" id="step-13" data-step="13">
+      <div class="step-head">
+        <div class="badge"><span class="num">13</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>Wait for Clearance, Then Payroll</h2>
+      </div>
+      <p class="why">Don't start GA work early, even informally.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-13-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Wait for your supervisor/GPD/hiring manager to confirm you're officially cleared to begin working</span></label></li>
+        <li><label><input type="checkbox" id="chk-13-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Do not access research activities, data, or sensitive information before your contract is approved</span></label></li>
+        <li><label><input type="checkbox" id="chk-13-2"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Once cleared, you're on track for your first paycheck</span></label></li>
+      </ul>
+    </section>
+
+    <div class="callout">
+      <h2>Be Patient, But Persistent</h2>
+      <p>You'll interact with multiple FIU offices, and one office may be waiting on another before it can finish your request. Keep copies of every document. Check your FIU email and MyFIU regularly. Follow up politely. Don't assume silence means the process is complete.</p>
+    </div>
+
+    <section class="step" id="step-mh" data-step="mh">
+      <div class="step-head">
+        <div class="badge"><span class="num">&hearts;</span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></div>
+        <h2>One More Thing: Take Care of Your Mental Health</h2>
+      </div>
+      <p class="why">Moving to a new country, starting a PhD, and juggling visa paperwork all at once is a lot. FIU has free, confidential counseling for students.</p>
+      <ul class="checklist" data-checklist>
+        <li><label><input type="checkbox" id="chk-mh-0"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Save this link: <a href="https://dasa.fiu.edu/all-departments/counseling-and-psychological-services/" target="_blank" rel="noopener">FIU Counseling and Psychological Services</a></span></label></li>
+        <li><label><input type="checkbox" id="chk-mh-1"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg></span><span class="txt">Reach out anytime you're overwhelmed, not only in a crisis</span></label></li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="actions">
+      <button class="reset" id="reset-btn" type="button">Reset progress</button>
+      <span class="confirm" id="confirm-row">
+        Clear every checkbox?
+        <button class="yes" id="confirm-yes" type="button">Yes, reset</button>
+        <button id="confirm-no" type="button">Cancel</button>
+      </span>
+    </div>
+    <p>Your checkmarks save automatically in this browser. They won't follow you to a different device or browser.</p>
+    <details class="sources">
+      <summary>Sources</summary>
+      <ul>
+        <li>FIU International Student &amp; Scholar Services (ISSS)</li>
+        <li>FIU International Admitted Students checklist</li>
+        <li>FIU New International Graduate Assistant (GA) Checklist (Graduate School, July 2025)</li>
+        <li>FIU Admissions</li>
+        <li>FIU Catalog (immunization policy)</li>
+        <li>Noel's own experience going through this process</li>
+      </ul>
+    </details>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'fiu-panther-checklist-v1';
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = loadState();
+  var checkboxes = Array.prototype.slice.call(document.querySelectorAll('.checklist input[type="checkbox"]'));
+
+  checkboxes.forEach(function(cb){
+    if(state[cb.id]) cb.checked = true;
+    cb.addEventListener('change', function(){
+      state[cb.id] = cb.checked;
+      saveState(state);
+      updateProgress();
+    });
+  });
+
+  var sections = Array.prototype.slice.call(document.querySelectorAll('.step')).filter(function(s){
+    return s.querySelector('.checklist');
+  });
+
+  function updateProgress(){
+    var doneSections = 0;
+    sections.forEach(function(s){
+      var boxes = Array.prototype.slice.call(s.querySelectorAll('input[type="checkbox"]'));
+      var allChecked = boxes.length > 0 && boxes.every(function(b){ return b.checked; });
+      s.classList.toggle('complete', allChecked);
+      if(allChecked) doneSections++;
+    });
+    var pct = sections.length ? Math.round((doneSections / sections.length) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-count').textContent = doneSections + ' of ' + sections.length + ' sections complete';
+  }
+
+  updateProgress();
+
+  var resetBtn = document.getElementById('reset-btn');
+  var confirmRow = document.getElementById('confirm-row');
+  resetBtn.addEventListener('click', function(){
+    confirmRow.classList.add('show');
+  });
+  document.getElementById('confirm-no').addEventListener('click', function(){
+    confirmRow.classList.remove('show');
+  });
+  document.getElementById('confirm-yes').addEventListener('click', function(){
+    checkboxes.forEach(function(cb){ cb.checked = false; });
+    state = {};
+    saveState(state);
+    updateProgress();
+    confirmRow.classList.remove('show');
+  });
+})();
+</script>
+</body>
+</html>
